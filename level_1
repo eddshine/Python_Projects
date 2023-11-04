@@ -1,0 +1,8 @@
+words = {}
+text = "The quick brown fox jumps over the lazy dog!"
+for word in text.split():
+  if word not in words:
+    words[word] = 1
+  else:
+    words.update({word:words[word]+1})
+print(words)
