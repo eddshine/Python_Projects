@@ -1,0 +1,135 @@
+import os, time
+
+inventory = {}
+
+total_rev = 0
+
+
+def add(product_name, price, initial_quantity):
+  sold = 0
+  inventory[product_name] = (price, initial_quantity, sold)
+  print("======================== PRODUCT ADD ========================")
+  print("                  Product added successfully!.")
+  print("======================== PRODUCT ADD ========================")
+  recall(1)
+
+
+def update_price(product_name, price):
+  if product_name in inventory:
+    values = inventory[product_name]
+    new_price = (price, values[1], values[2])
+    inventory.update({inventory[product_name]: new_price})
+    print("======================== UPDATE PRICE ========================")
+    print("              Product price updated successfully!.")
+    print("======================== UPDATE PRICE ========================")
+    recall(1)
+  else:
+    print("======================== UPDATE PRICE ========================")
+    print("                    Product does not exist.")
+    print("======================== UPDATE PRICE ========================")
+    recall(1)
+
+
+def update_quantity(product_name, quantity):
+  if product_name in inventory:
+    values = inventory[product_name]
+    new_quantity = (values[0], quantity, values[2])
+    inventory.update({inventory[product_name]: new_quantity})
+    print("======================== UPDATE QUANTITY ========================")
+    print("           Product quantity updated successfully!.")
+    print("======================== UPDATE QUANTITY ========================")
+    recall(1)
+  else:
+    print("======================== UPDATE QUANTITY ========================")
+    print("                     Product does not exist.")
+    print("======================== UPDATE QUANTITY ========================")
+    recall(1)
+
+
+def sell(product_name, sold):
+  if product_name in inventory:
+    if inventory[product_name][1] != 0:
+      values = inventory[product_name]
+      sold_product = (values[0], int(values[1])-int(sold), sold)
+      inventory.update({inventory[product_name]: sold_product})
+      print("======================== SELL ========================")
+      print("        Product sell updated successfully!.")
+      print("======================== SELL ========================")
+      recall(1)
+    else:
+      print("======================== SELL ========================")
+      print("               Product has 0 stock left")
+      print("======================== SELL ========================")
+      recall(1)
+  else:
+    print("======================== SELL ========================")
+    print("              Product does not exist.")
+    print("======================== SELL ========================")
+    recall(1)
+
+
+def remove(product_name):
+  inventory.pop(product_name)
+  print("======================== REMOVE ========================")
+  print("                Product successfuly removed.")
+  print("======================== REMOVE ========================")
+  recall(1)
+
+
+def total_revenue():
+  for products in list(inventory.values()):
+    global total_rev
+    total_rev += int(inventory[products][0]) * int(inventory[products][2])
+  print("======================== TOTAL REVENUE ========================")
+  print(f"                  The total revenue is {total_rev}")
+  print("======================== TOTAL REVENUE ========================")
+  recall(1)
+
+
+def get_inputs():
+  commands = [
+      "ADD", "UPDATE_PRICE", "UPDATE_QUANTITY", "REMOVE", "SELL",
+      "TOTAL_REVENUE"
+  ]
+  print("======================== COMMANDS ========================")
+  print("      ADD <product name> <price> <initial quantity>")
+  print("      UPDATE_PRICE <product name> <new price>")
+  print("      UPDATE_QUANTITY <product name> <new quantity>")
+  print("      REMOVE <product name>")
+  print("      SELL <product name> <quantity sold>")
+  print("      TOTAL_REVENUE")
+  print("======================== COMMANDS ========================")
+  getcommand = input().split()
+  if getcommand[0] in commands:
+    if getcommand[0] == "ADD":
+      add(getcommand[1], getcommand[2], getcommand[3])
+    elif getcommand[0] == "UPDATE_PRICE":
+      update_price(getcommand[1], getcommand[2])
+    elif getcommand[0] == "UPDATE_QUANTITY":
+      update_quantity(getcommand[1], getcommand[2])
+    elif getcommand[0] == "REMOVE":
+      remove(getcommand[1])
+    elif getcommand[0] == "SELL":
+      sell(getcommand[1], getcommand[2])
+    elif getcommand[0] == "TOTAL_REVENUE":
+      total_revenue()
+  else:
+    print("======================== INVALID COMMAND ========================")
+    print("                     ERROR: INVALID COMMAND!")
+    print("======================== INVALID COMMAND ========================")
+    recall(1)
+
+
+def clear_console():
+  time.sleep(2)
+  os.system("clear")
+
+
+def recall(stage):
+  if stage == 1:
+    clear_console()
+    get_inputs()
+
+
+if __name__ == "__main__":
+  get_inputs()
